@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'movie_detail.dart';
 
 
-class MovieList extends StatefulWidget {
+class TvShowList extends StatefulWidget {
   @override
-  MovieListState createState() {
-    return new MovieListState();
+  TvListState createState() {
+    return new TvListState();
   }
 }
 
-class MovieListState extends State<MovieList> {
+class TvListState extends State<TvShowList> {
 
   var movies;
   Color mainColor = const Color(0xffffffff);
@@ -64,7 +64,7 @@ class MovieListState extends State<MovieList> {
 
 Future<Map> getJson() async {
   var url =
-      'http://api.themoviedb.org/3/discover/movie?api_key=9d7de0489797bb083853f9751c0040cd';
+      'http://api.themoviedb.org/3/movie/top_rated?api_key=9d7de0489797bb083853f9751c0040cd';
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }

@@ -1,35 +1,31 @@
+import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'movie_detail.dart';
 
-
-class MovieList extends StatefulWidget {
+class NewList extends StatefulWidget {
   @override
-  MovieListState createState() {
-    return new MovieListState();
+  NewListState createState() {
+    return new NewListState();
   }
 }
 
-class MovieListState extends State<MovieList> {
+class NewListState extends State<NewList> {
 
-  var movies;
+  var news;
   Color mainColor = const Color(0xffffffff);
 
 
   void getData() async {
     var data = await getJson();
-
     setState(() {
-      movies = data['results'];
+      news = data['articles'];
     });
   }
-
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     getData();
-
     return new Scaffold(
       backgroundColor: Colors.black,
       body: new Padding(
@@ -39,18 +35,18 @@ class MovieListState extends State<MovieList> {
           children: <Widget>[
             new Expanded(
               child: new ListView.builder(
-                  itemCount: movies == null ? 0 : movies.length,
+                  itemCount: news == null ? 0 : news.length,
                   itemBuilder: (context, i) {
                     return  new FlatButton(
 
-                      child: new MovieCell(movies,i),
+                      child: new NewsCell(news,i),
                       padding: const EdgeInsets.all(0.0),
-                      onPressed: (){
-                        Navigator.push(context, new MaterialPageRoute(builder: (context){
-                          return new MovieDetail(movies[i]);
-                        }));
-                      },
                       color: Colors.black,
+                      onPressed: (){
+                        //Navigator.push(context, new MaterialPageRoute(builder: (context){
+                      //  return new MovieDetail(movies[i]);
+                     // }));
+                      },
                     );
 
                   }),
@@ -60,22 +56,22 @@ class MovieListState extends State<MovieList> {
       ),
     );
   }
+  Future<Map> getJson() async {
+    print('inside get json');
+    var url =
+        'https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=601b562237754c67999cf52bf7764dd0';
+    http.Response response = await http.get(url);
+    return json.decode(response.body);
+  }
+
 }
 
-Future<Map> getJson() async {
-  var url =
-      'http://api.themoviedb.org/3/discover/movie?api_key=9d7de0489797bb083853f9751c0040cd';
-  http.Response response = await http.get(url);
-  return json.decode(response.body);
-}
+class NewsCell extends StatelessWidget{
 
-class MovieCell extends StatelessWidget{
-
-  final movies;
+  final news;
   final i;
   Color mainColor = const Color(0xffffffff);
-  var image_url = 'https://image.tmdb.org/t/p/w500/';
-  MovieCell(this.movies,this.i);
+  NewsCell(this.news,this.i);
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +92,7 @@ class MovieCell extends StatelessWidget{
                   borderRadius: new BorderRadius.circular(2.0),
                   color: Colors.grey,
                   image: new DecorationImage(
-                      image: new NetworkImage(
-                          image_url + movies[i]['poster_path']),
+                      image: new NetworkImage(news[i]['urlToImage']),
                       fit: BoxFit.cover),
                   boxShadow: [
                     new BoxShadow(
@@ -114,7 +109,7 @@ class MovieCell extends StatelessWidget{
                   margin: const EdgeInsets.fromLTRB(16.0,0.0,16.0,0.0),
                   child: new Column(children: [
                     new Text(
-                      movies[i]['title'],
+                      news[i]['title'],
                       style: new TextStyle(
                           fontSize: 20.0,
                           fontFamily: 'Arvo',
@@ -122,7 +117,7 @@ class MovieCell extends StatelessWidget{
                           color: mainColor),
                     ),
                     new Padding(padding: const EdgeInsets.all(2.0)),
-                    new Text(movies[i]['overview'],
+                    new Text(news[i]['description'],
                       maxLines: 3,
                       style: new TextStyle(
                           color: const Color(0xffffffffff),
@@ -142,7 +137,5 @@ class MovieCell extends StatelessWidget{
         )
       ],
     );
-
   }
-
 }
