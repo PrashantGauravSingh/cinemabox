@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class dashboard extends StatefulWidget{
+class Dashboard extends StatefulWidget{
   @override
   _DashboardState createState()=> _DashboardState();
 
 }
 
-class _DashboardState extends State<dashboard> {
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -14,9 +14,10 @@ class _DashboardState extends State<dashboard> {
       appBar: AppBar(title: Text("Dashboard"),),
       body: new Container(
         padding: EdgeInsets.symmetric(vertical: 30.0,horizontal:10.0),
+        color: Colors.black87,
         child: GridView.count(
             crossAxisCount: 2,
-    padding: EdgeInsets.all(3.0),
+    padding: EdgeInsets.all(10.0),
     children: <Widget>[
       makeDashboardItem("Popular", Icons.movie),
       makeDashboardItem("Upcoming", Icons.movie_creation),

@@ -1,3 +1,4 @@
+import 'package:cinemabox/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'list_movie.dart';
 
